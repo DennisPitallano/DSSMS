@@ -1,0 +1,317 @@
+﻿@using AJ3.Core.Common
+@model IEnumerable<StudentCourseDetailViewModel>
+@foreach (var course in Model)
+{
+    <div class="row @(course.BalanceAmount>0 && !course.IsCancelled ?"":"d-none")">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <div class="alert alert-custom alert-light-danger fade show mb-9" role="alert">
+                <div class="alert-icon">
+                    <i class="flaticon-warning"></i>
+                </div>
+                <div class="alert-text">
+                    Remind Student to pay the remaining balance
+                    <br />Payment reminder!
+                </div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="ki ki-close"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mx-10">
+        <div class="col-xl-12">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b card-stretch">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <!--begin::Section-->
+                    <div class="d-flex align-items-center">
+                        <!--begin::Pic-->
+                        <div class="flex-shrink-0 mr-4  ">
+                            <img src="assets/media/logos/AJ3.jpg" height="50" alt="image" />
+                        </div>
+                        <!--end::Pic-->
+                        <!--begin::Info-->
+                        <div class="d-flex flex-column mr-auto">
+                            <!--begin: Title-->
+                            <a href="#" class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1">@course.Name [@course.DisplayHours]</a>
+                            <span class="text-muted font-weight-bold">@course.Description</span>
+                            <a asp-action="Certificate" target="_blank" asp-controller="Report" asp-route-orderId="@course.OrderId" class=" text-hover-primary font-weight-bolder text-dark mb-1">
+                                <i class="fa fa-certificate"></i> CERTIFICATE
+                            </a>
+                            <!--end::Title-->
+                            <div>
+                                @if (!string.IsNullOrEmpty(course.ChangeToCourseType))
+                                {
+                                    if (course.ChangeToCourseType.Equals("UPGRADE"))
+                                    {
+                                        <span>Upgraded to </span>
+                                        <br />
+                                        <span class="text-danger font-size-h4-md font-weight-bold">@course.ChangeCourseToName</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Downgrade to </span>
+                                        <br />
+                                        <span class="text-muted font-weight-bold">@course.ChangeCourseToName</span>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                        <!--end::Info-->
+                        <!--begin::Toolbar-->
+                        <div class="card-toolbar mb-auto">
+                            <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
+                                <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ki ki-bold-more-hor"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                                    <!--begin::Navigation-->
+                                    <ul class="navi navi-hover">
+                                        <li class="navi-header pb-1">
+                                            <span class="text-primary text-uppercase font-weight-bold font-size-sm">Detail:</span>
+                                        </li>
+                                        <li class="navi-item">
+                                            <a target="_blank" href="/Orders/Details/@course.OrderId" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="flaticon2-medical-records"></i>
+                                                </span>
+                                                <span class="navi-text">View Order</span>
+                                            </a>
+                                        </li>
+                                        @if (course.TotalPayableAmount != 0 && !course.IsCancelled)
+                                        {
+                                            <li class="navi-item">
+                                                <a onclick="StudentProfile.getOrderPaymentForm(@course.OrderId,@course.StudentId, @course.TotalPayableAmount,'@FormView.New')" class="navi-link cursor-pointer">
+                                                    <span class="navi-icon">
+                                                        <i class="flaticon2-shopping-cart"></i>
+                                                    </span>
+                                                    <span class="navi-text">Add Payment</span>
+                                                </a>
+                                            </li>
+                                        }
+                                        @if (!course.IsCancelled)
+                                        {
+                                            @if (!User.Identity.Name.Contains("AJ3"))
+                                            {
+                                                <li class="navi-item">
+                                                    <a onclick="StudentProfile.getChangeCourseForm(@course.Id, @course.StudentId, @course.OrderId, @course.TotalPaidAmount, @course.CategoryId, @course.CourseId)" class="navi-link cursor-pointer">
+                                                        <span class="navi-icon">
+                                                            <i class="flaticon2-start-up"></i>
+                                                        </span>
+                                                        <span class="navi-text">Upgrade/ Downgrade</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                            <li class="navi-item">
+                                                <a onclick="StudentProfile.getCancelCourseForm(@course.Id, @course.StudentId, @course.OrderId, @course.TotalPaidAmount)" class="navi-link cursor-pointer">
+                                                    <span class="navi-icon">
+                                                        <i class="flaticon-close"></i>
+                                                    </span>
+                                                    <span class="navi-text">Cancel Course</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                    <!--end::Navigation-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Toolbar-->
+                    </div>
+                    <!--end::Section-->
+                    <!--begin::Content-->
+                    <div class="d-flex flex-wrap mt-14">
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="d-block font-weight-bold mb-4">Registered Date</span>
+                            <span title="@course.DateCreated.ToLongDateString()" class="btn  btn-light-primary btn-sm font-weight-bold btn-upper btn-text">@course.DateCreated.ToString("dd MMM, yyyy")</span>
+                        </div>
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="d-block font-weight-bold mb-4">Graduation Date</span>
+                            @if (!course.Status.Equals("Graduated"))
+                            {
+                                <span class="btn btn-light-danger btn-sm font-weight-bold btn-upper btn-text">---</span>
+                            }
+                            else
+                            {
+                                <span class="btn btn-light-danger btn-sm font-weight-bold btn-upper btn-text">@course.DateUpdated.ToString("dd MMM, yyyy")</span>
+                            }
+                        </div>
+                        <!--begin::Progress-->
+                        <div class="flex-row-fluid mb-7">
+                            <span class="d-block font-weight-bold mb-4">Payment Status</span>
+                            <div class="d-flex align-items-center pt-2">
+                                <div class="progress progress-xs mt-2 mb-2 w-100">
+                                    <div class="progress-bar @(course.BalanceAmount>0?"bg-warning":"bg-success")" role="progressbar" style="width: @course.PaymentPercentageComplete%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ml-3 font-weight-bolder">@course.PaymentPercentageComplete.ToString("N0")%</span>
+                            </div>
+                        </div>
+                        <!--end::Progress-->
+                    </div>
+                    <!--end::Content-->
+                    <!--begin::Text-->
+                    <div class="mb-7">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-dark-75 font-weight-bolder mr-2">Course Status:</span>
+                            <div class="text-muted ">
+                                <span class="spnCourseStatus">
+                                    @if (course.IsCancelled)
+                                    {
+                                        <label class="text-danger font-weight-bold">@course.Status</label>
+                                    }
+                                    else
+                                    {
+                                        <label>@course.Status</label>
+                                    }
+                                </span>
+                                <div class="dropdown dropdown-inline">
+                                    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">
+                                        <i class="fas fa-pen-alt svg-icon svg-icon-md"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                        <ul class="navi flex-column navi-hover py-2">
+                                            <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
+                                                Update Status:
+                                            </li>
+                                            <li class="navi-item">
+                                                <a onclick="StudentProfile.confirmUpdateStatus(@course.Id,1)" class="navi-link cursor-pointer">
+                                                    <span class="navi-icon"><i class="fas fa-award"></i></span>
+                                                    <span class="navi-text">In Progress</span>
+                                                </a>
+                                            </li>
+                                            <li class="navi-item">
+                                                <a onclick="StudentProfile.confirmUpdateStatus(@course.Id,2)" class="navi-link cursor-pointer">
+                                                    <span class="navi-icon"><i class="la fa-trophy"></i></span>
+                                                    <span class="navi-text">Graduated</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <form id="formStudentCourseUpdateInProgress-@course.Id" asp-antiforgery="true"
+                                              asp-controller="Students" asp-action="UpdateStudentCourseStatus"
+                                              asp-route-id="@course.Id"
+                                              asp-route-status="In Progress"
+                                              data-ajax="true"
+                                              data-ajax-begin="StudentProfile.OnBeginSave"
+                                              data-ajax-complete="StudentProfile.OnSuccessUpdateCourseStatus"></form>
+                                        <form id="formStudentCourseUpdateGraduated-@course.Id" asp-antiforgery="true"
+                                              asp-controller="Students" asp-action="UpdateStudentCourseStatus"
+                                              asp-route-id="@course.Id"
+                                              asp-route-status="Graduated"
+                                              data-ajax="true"
+                                              data-ajax-begin="StudentProfile.OnBeginSave"
+                                              data-ajax-complete="StudentProfile.OnSuccessUpdateCourseStatus"></form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center my-1">
+                            <span class="text-dark-75 font-weight-bolder mr-2">Consumed Hours</span>
+
+                            <label class="text-muted ">
+                                <span class="spnCourseConsumedHours">@course.DisplayConsumedHours</span>
+                                @*@if (!Model.Status.Equals("Graduated", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <button type="button" data-toggle="tooltip" title="Update Consumed Hours" class="btn btn-sm btn-clean btn-icon mr-2">
+                                            <i class="fas fa-pen-alt svg-icon svg-icon-md"></i>
+                                        </button>
+                                    }*@
+                            </label>
+                        </div>
+                    </div>
+                    <div class="separator separator-border-1 separator-dashed"></div>
+                    <div class="mb-7">
+                        @await Component.InvokeAsync("OrderAdjustmentList", new { orderId = course.OrderId })
+                    </div>
+                    <div class="separator separator-border-1 separator-dashed my-3"></div>
+                    <!--end::Text-->
+                    <!--begin::Blog-->
+                    <div class="d-flex flex-wrap">
+                        <!--begin: Item-->
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="font-weight-bolder mb-4">Course Price</span>
+                            <span class="font-weight-bolder font-size-h5 pt-1">
+                                <span class="font-weight-bold text-dark-50"></span>@course.DisplayAmount
+                            </span>
+                        </div>
+                        <!--end::Item-->
+                        <!--begin: Item-->
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="font-weight-bolder mb-4">Discount Price</span>
+                            <span class="font-weight-bolder font-size-h5 pt-1">
+                                <span class="font-weight-bold text-dark-50"></span>(@course.DisplayDiscount)
+                            </span>
+                        </div>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="font-weight-bolder mb-4">Paid Amount</span>
+                            <span class="font-weight-bolder font-size-h5 pt-1">
+                                <span class="font-weight-bold text-dark-50"></span>@course.DisplayTotalPaidAmount
+                            </span>
+                        </div>
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="font-weight-bolder mb-4">Payable</span>
+                            <span class="font-weight-bolder text-danger font-size-h5 pt-1">
+                                <span class="font-weight-bold text-dark-50"></span>@course.DisplayBalanceAmount
+                                <input type="hidden" id="hdnBalanceAmount" value="@course.BalanceAmount" />
+                                <input type="hidden" id="hdnTotalPayableAmount" value="@course.TotalPayableAmount" />
+                            </span>
+                        </div>
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="font-weight-bolder mb-4">Adjustment</span>
+                            <span class="font-weight-bolder text-danger font-size-h5 pt-1">
+                                <span class="font-weight-bold text-dark-50"></span>@course.DisplayAdjustmentAmount
+                            </span>
+                        </div>
+                        <div class="mr-12 d-flex flex-column mb-7">
+                            <span class="font-weight-bolder mb-4">Total Payable</span>
+                            <span class="font-weight-bolder text-danger font-size-h5 pt-1">
+                                <span class="font-weight-bold text-dark-50"></span>@course.DisplayTotalPayableAmount
+                            </span>
+                        </div>
+                    </div>
+                    <!--end::Blog-->
+                </div>
+                <!--end::Body-->
+                <!--begin::Footer-->
+                <div class="card-footer py-5 d-flex align-items-center">
+                    <div class="d-flex">
+                        <div class="d-flex align-items-center mr-7" title="ORDER NUMBER">
+                            <span class="svg-icon svg-icon-dark-75">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <path d="M13,5 L15,5 L15,20 L13,20 L13,5 Z M5,5 L5,20 L3,20 C2.44771525,20 2,19.5522847 2,19 L2,6 C2,5.44771525 2.44771525,5 3,5 L5,5 Z M16,5 L18,5 L18,20 L16,20 L16,5 Z M20,5 L21,5 C21.5522847,5 22,5.44771525 22,6 L22,19 C22,19.5522847 21.5522847,20 21,20 L20,20 L20,5 Z" fill="#000000" />
+                                        <polygon fill="#000000" opacity="0.3" points="9 5 9 20 7 20 7 5" />
+                                    </g>
+                                </svg>
+                            </span>
+                            <a class="font-weight-bolder text-dark-65 ml-2">@course.OrderNumber</a>
+                        </div>
+                        <div class="d-flex align-items-center mr-7" title="DATE ORDERED">
+                            <span class="svg-icon svg-icon-dark-75">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <path d="M12,22 C7.02943725,22 3,17.9705627 3,13 C3,8.02943725 7.02943725,4 12,4 C16.9705627,4 21,8.02943725 21,13 C21,17.9705627 16.9705627,22 12,22 Z" fill="#000000" opacity="0.3" />
+                                        <path d="M11.9630156,7.5 L12.0475062,7.5 C12.3043819,7.5 12.5194647,7.69464724 12.5450248,7.95024814 L13,12.5 L16.2480695,14.3560397 C16.403857,14.4450611 16.5,14.6107328 16.5,14.7901613 L16.5,15 C16.5,15.2109164 16.3290185,15.3818979 16.1181021,15.3818979 C16.0841582,15.3818979 16.0503659,15.3773725 16.0176181,15.3684413 L11.3986612,14.1087258 C11.1672824,14.0456225 11.0132986,13.8271186 11.0316926,13.5879956 L11.4644883,7.96165175 C11.4845267,7.70115317 11.7017474,7.5 11.9630156,7.5 Z" fill="#000000" />
+                                    </g>
+                                </svg>
+                            </span>
+                            <a class="font-weight-bolder text-dark-65 ml-2"> @course.DateOrdered</a>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Footer-->
+            </div>
+            <!--end::Card-->
+        </div>
+    </div>
+}
+

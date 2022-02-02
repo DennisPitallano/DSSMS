@@ -1,0 +1,51 @@
+﻿@model CancelStudentCourseFormViewModel
+<form class="form" data-ajax-method="post" data-ajax="true" asp-action="CancelStudentCourse" asp-controller="Students"
+      data-ajax-begin="StudentProfile.OnBeginSave"
+      data-ajax-success="StudentProfile.OnSuccessCancelCourse">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="OrderId" />
+    <input type="hidden" asp-for="StudentId" />
+    <input type="hidden" asp-for="TotalPaidAmount" />
+    <div class="form-group row">
+        <label class="col-3 col-form-label">Avail Refund</label>
+        <div class="col-3">
+            <span class="switch switch-icon">
+                <label>
+                    <input onclick="StudentProfile.availRefund(this,@Model.TotalPaidAmount)" asp-for="IsRefunded" type="checkbox" />
+                    <span></span>
+                </label>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Cancellation Reason:</label>
+        <textarea asp-for="CancellationReason" class="form-control form-control-solid" placeholder="Enter Reason Description"></textarea>
+        <span asp-validation-for="CancellationReason" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">Refund Amount</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    ₱
+                </span>
+            </div>
+            <input asp-for="RefundedAmount" disabled="disabled" class="form-control form-control-lg form-control-solid" value="0" placeholder="Price">
+        </div> 
+        <span asp-validation-for="RefundedAmount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">Total Paid Amount: <samp> @Model.DisplayTotalPaidAmount </samp></label>
+    </div>
+    <div class="text-center my-3 font-weight-lighter text-danger">
+        <i class="flaticon-warning-sign text-danger"></i> You won't be able to revert this!
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary font-weight-bold">Save</button>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+
+</script>

@@ -1,0 +1,53 @@
+﻿@using AJ3.Core.Common
+@{
+    ViewData["Title"] = "Details";
+}
+@section style
+{
+  
+}
+<!--begin::Content-->
+<div class="content d-flex flex-column  py-lg-3 flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-3 py-lg-2 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h2 class="d-flex align-items-center text-dark font-weight-bold my-1 mr-3">Invoice </h2>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold my-2 p-0">
+                        <li class="breadcrumb-item  text-muted">
+                            <a asp-action="Index" asp-controller="Orders" class="text-muted">Orders</a>
+                        </li>
+                        <li class="breadcrumb-item active text-muted">
+                            <a class="text-muted">Invoice </a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            @await Component.InvokeAsync("StudentCourseDetail", new {id=(int)ViewBag.OrderId,view = OrderView.Order})
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+@section scripts
+{
+    <script src="js/printThis.js"></script>
+    <script src="js/orders/detail-view.js"></script>
+}

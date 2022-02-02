@@ -1,0 +1,29 @@
+﻿@model IEnumerable<OrderDetailListViewModel>
+<!-- begin: Invoice body-->
+<div class="row justify-content-center py-4 px-8 py-md-5 px-md-0">
+    <div class="col-md-9">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="pl-0 font-weight-bold text-muted text-uppercase">Description</th>
+                        <th class="text-right font-weight-bold text-muted text-uppercase">Hours</th>
+                        <th class="text-right font-weight-bold text-muted text-uppercase">Rate</th>
+                        <th class="text-right pr-0 font-weight-bold text-muted text-uppercase">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach(var detail in Model){
+                    <tr class="font-weight-boldest">
+                        <td class="pl-0 pt-7">@detail.Description</td>
+                        <td class="text-right pt-7">@detail.DisplayHours</td>
+                        <td class="text-right pt-7">@detail.DisplayAmount</td>
+                        <td class="text-danger pr-0 pt-7 text-right">@detail.DisplayAmount</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- end: Invoice body-->

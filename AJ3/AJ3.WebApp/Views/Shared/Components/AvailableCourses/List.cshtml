@@ -1,0 +1,41 @@
+﻿@model IEnumerable<AvailableCourseViewModel>
+
+
+    <div class="form-group m-0">
+        @foreach (var name in (IEnumerable<string>)ViewBag.Names)
+        {
+            <h5 class="text-dark font-weight-bold">@name</h5>
+            <div class="row">
+                @foreach (var course in Model.Where(c => c.Name.Equals(name)))
+                {
+                    <div class="col-lg">
+                        <label class="option cursor-pointer text-hover-white hover bg-hover-danger-o-3">
+                            <span class="option-control">
+                                <span class="radio">
+                                    <input id="@course.Id" data-courseid="@course.Id" data-displayamount="@course.DisplayUnitPrice"
+                                           data-desc="@course.Description" data-amount="@course.UnitPrice" data-discount="@course.Discount"
+                                           data-hours="@course.Hours" data-hoursdisplay="@course.DisplayHours" data-displaydiscount="@course.DisplayDiscount"
+                                           data-displaydiscountedprice="@course.DisplayDiscountedPrice"
+                                           data-discountedprice="@course.DiscountedPrice"
+                                           onchange="KTAddStudent.getSelectedCourse(this)" type="radio" value="@course.Id" name="course"/>
+                                    <span></span>
+                                </span>
+                            </span>
+                            <span class="option-label text-hover-white">
+                                <span class="option-head">
+                                    <span class="option-title">[@course.DisplayHours]</span>
+                                    <span class="option-focus text-hover-white">@course.DisplayUnitPrice</span>
+                                </span>
+                                <span class="option-body text-hover-white">
+                                    @course.Description
+                                    <br/>
+                                    <samp>Discount:@course.DisplayDiscount</samp>
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                }
+            </div>
+            <div class="separator separator-dashed my-5"></div>
+        }
+    </div>

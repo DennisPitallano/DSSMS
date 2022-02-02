@@ -1,0 +1,17 @@
+﻿@using AJ3.Core.Common
+@using AJ3.Core.Data.Entity
+@{
+    var student = (StudentDetailViewModel)ViewBag.Student;
+    var comProf = (CompanyProfile)ViewBag.CompanyProfile;
+}
+<!-- end: Invoice header-->
+@await Component.InvokeAsync("OrderDetailList", new { orderId = Model.OrderId })
+<div class="row justify-content-center py-4 px-8 py-md-2 px-md-0">
+    <div class="col-md-9">
+        <div class="table-responsive">
+            @await Component.InvokeAsync("OrderAdjustmentList", new { orderId = Model.OrderId })
+        </div>
+    </div>
+</div>
+@await Component.InvokeAsync("OrderPaymentHistoryDetail", new { orderId = Model.OrderId, view = OrderView.Order })
+<!-- begin: Invoice action-->

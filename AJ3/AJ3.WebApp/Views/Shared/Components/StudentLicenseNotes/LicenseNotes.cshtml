@@ -1,0 +1,36 @@
+﻿@model MultiSelectList
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-custom gutter-b example example-compact">
+                    <div class="card-header">
+                        <h3 class="card-title">@ViewBag.LicenseNoteType</h3>
+                    </div>
+                    <div class="card-body pb-0">
+                            <div class="form-group">
+                                <label>Select @ViewBag.LicenseNoteType</label>
+                                <div class="checkbox-list">
+                                    @foreach (var item in Model)
+                                    {
+                                        <label class="checkbox checkbox-lg">
+                                            <input onclick="StudentProfile.submitForm(this,@item.Value)" type="checkbox" @(item.Selected?"checked='checked'":"")/>
+                                            <span></span>@item.Text
+                                        </label>
+                                        <form id="frmSN-@item.Value" class=""  asp-antiforgery="true"
+                                              asp-controller="Students" asp-action="UpdateStudentLicenseNote"
+                                              asp-route-id="@item.Value"
+                                              asp-route-studentId="@ViewBag.StudentId"
+                                              data-ajax="true"
+                                              data-ajax-begin="StudentProfile.OnBeginSave"
+                                              data-ajax-complete="StudentProfile.OnSuccessUpdateLicenseNote" >
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

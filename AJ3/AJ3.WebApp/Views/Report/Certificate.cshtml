@@ -1,0 +1,235 @@
+﻿@using AJ3.WebApp.Infrastructure.Extensions
+@model StudentCourseDetailViewModel;
+@{
+    ViewData["Title"] = "Certificate";
+    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+    var student = (StudentDetailViewModel) ViewBag.Student;
+    var studentCourse =(StudentCourseDetailViewModel)ViewBag.StudentCourseDetail;
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4 text-center">
+                    <h6>AJ3 Universal Driving School</h6>
+                    <span>730-A, Del Monte Ave.</span>
+                    <br />
+                    <span>Quezon City, Philippines</span>
+                    <br />
+                    <span>0917-1380027/0961-0622968</span>
+                </div>
+                <div class="col-4">
+                    <img class="m-15 img-fluid" height="50" src="~/assets/media/logos/AJ3.jpg" alt="" />
+                </div>
+            </div>
+            <div class="text-center font-weight-bold" style="margin-top: 20px; margin-bottom: 20px;">
+                <h5>CERTIFICATE OF REGISTRATION</h5>
+            </div>
+            <div class="row" contenteditable="true">
+                <div class="col  font-weight-bold">
+                    Name:<span class="text-uppercase"> @student.FullName</span>
+                    <br />
+                    Nationality:<span class="text-uppercase"> @student.Nationality</span>
+                    <br />
+                    Birthday:<span class="text-uppercase"> @student.DateOfBirth.ToString("MMM dd, yyyy")</span>
+                </div>
+                <div class="col  font-weight-bold">
+                    Branch:<span class="text-uppercase"> Del Monte</span>
+                    <br />
+                    AR-NO:<span class="text-uppercase"> 0003</span>
+                    <br />
+                    Course/Plan:<span class="text-uppercase"> @studentCourse.CourseId</span>
+                </div>
+                <div class="col  font-weight-bold">
+                    Mode of Payment:<span class="text-uppercase"> Cash</span>
+                    <br />
+                    Date Issued:<span class="text-uppercase"> @studentCourse.DateCreated.ToString("MMM dd, yyyy")</span>
+                </div>
+            </div>
+            <div class="row " style="margin-top: 30px;">
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">Subject Code</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Hours</th>
+                            <th scope="col">Days</th>
+                            <th scope="col">Schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center ">
+                        @foreach (var det in (IEnumerable<OrderDetailListViewModel>)ViewBag.OrderDetails)
+                        {
+                            <tr>
+                                <th contenteditable="true" scope="row">@det.StudentCourseId</th>
+                                <td>
+                                    <span>@det.Name</span>
+                                    <br />
+                                    <code> @det.Description</code>
+                                </td>
+                                <td>@det.DisplayHours</td>
+                                <td contenteditable="true">-</td>
+                                <td contenteditable="true"></td>
+                            </tr>
+                        }
+                        <tr contenteditable="true">
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr contenteditable="true">
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr contenteditable="true">
+                            <th scope="row"></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <!-- end: Invoice header-->
+                <div class="row justify-content-center py-4 px-8 py-md-2 px-md-0">
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            @*@await Component.InvokeAsync("OrderAdjustmentList", new { orderId = Model.OrderId })*@
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table class="table table-sm font-size-sm" style="font-size: small">
+                        <thead class="font-size-xs">
+                            <tr class="font-size-xs">
+                                <th class="font-weight-bold text-muted text-uppercase font-size-xs">OR NUMBER</th>
+                                <th class="font-weight-bold text-muted text-uppercase">DATE PAID</th>
+                                <th class="font-weight-bold text-muted text-uppercase">RECEIVED BY</th>
+                                <th class="font-weight-bold text-right text-muted text-uppercase">PAID AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var payment in (IEnumerable<StudentOrderPaymentViewModel>)ViewBag.Orderpayments)
+                            {
+                                <tr class="border-0">
+                                    <td >@payment.OrNumber</td>
+                                    <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                                    <td>@payment.UpdatedBy</td>
+                                    <td class="text-danger text-right font-size-base font-weight-bold">(@payment.Amount.ToPhFormatCurrency())</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td class="text-left">Total Payable</td>
+                            <td colspan="3" class="text-danger text-right font-size-h2 font-weight-bolder">
+                                <span class=" border-top">
+                                    @studentCourse.DisplayAmount
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Total Payment</td>
+                            <td colspan="3" class="text-danger text-right font-size-h6 font-weight-bolder">
+                                <span class=" border-top">
+                                    (@ViewBag.OrderPaymentsSummary)
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Total Balance </td>
+                            <td colspan="3" class="text-danger text-right font-size-h6 font-weight-bolder">@studentCourse.DisplayBalanceAmount</td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- begin: Invoice action-->
+            </div>
+        <div >
+            <h5>Terms & Conditions</h5>
+            <table class="table table-sm ">
+                <tbody class=" border-0 ">
+                <tr>
+                    <th class=" border-0 text-left w-10px" style="width: 20px;">1.</th>
+                    <td class=" border-0 text-left">Registration is non-refundable and non-transferable.</td>
+                </tr>
+                <tr>
+                    <th class=" border-0 " style="width: 20px;" scope="row">2.</th>
+                    <td class=" border-0 ">All students must bring their student permit or license (LTO O.R) and AJ3</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">3.</th>
+                    <td class=" border-0 ">Fees should be settled on or before the first hands-on driving.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">4.</th>
+                    <td class=" border-0 ">For cancellation of schedule, the student must contact our office 2 days prior to the allotted schedule.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">5.</th>
+                    <td class=" border-0 ">In case of rescheduling, the student must give prior notice within 2 days of their allotted schedule.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">6.</th>
+                    <td class=" border-0 ">Cancellation made within the day of the schedule is not allowed.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">7.</th>
+                    <td class=" border-0 ">For enrollment cancellation and/or course downgrade, the company reserves the right to deny refund of the fees or any payments made to compensate for time and resources spent in preparations, purchases and other expenses directly related to the enrollment.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">8.</th>
+                    <td class=" border-0 ">All students must arrive 10-15 minutes before the actual driving schedule.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">9.</th>
+                    <td class=" border-0 ">All phones must be in silent mode during lecture hours and practical driving.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">10.</th>
+                    <td class=" border-0 ">Absences due to medical reason is subject for approval upon review of medical certificate and personal letter from the student requesting for non-forfeiture of the driving schedule.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">11.</th>
+                    <td class=" border-0 ">The company reserves the right to cancel anytime the hands-on driving if irresponsible behavior by the student driver puts the safety of the driving instructor, training vehicle, and other road users at risk.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">12.</th>
+                    <td class=" border-0 ">No smoking while driving.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">13.</th>
+                    <td class=" border-0 ">Students under the obvious influence of liquor or prohibited drugs will not be allowed to drive and the scheduled lesson/s shall be forfeited.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">14.</th>
+                    <td class=" border-0 ">Children are not allowed inside training vehicles.</td>
+                </tr>
+                <tr contenteditable="true">
+                    <th class=" border-0 " style="width: 20px;" scope="row">15.</th>
+                    <td class=" border-0 ">Courses and fees are subject to change without prior notice.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center" style="margin-top:50px;">
+            <div class="">
+                <span class="text-uppercase font-weight-bold">@student.FullName</span>
+                <br/>
+                <span class="border-top border-2 border-top-lg border-dark">Signature over printed name</span>
+                <br/>
+                <span>of the student</span>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

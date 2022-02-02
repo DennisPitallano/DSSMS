@@ -1,0 +1,72 @@
+﻿@model AJ3.WebApp.Models.Course.CourseMasterListViewModel
+<td class="font-weight-bold">@Model.Id</td>
+<td>
+    @Model.Name
+    <br />
+    <code class="text-muted" data-toggle="tooltip" data-placement="left" title="Category"> @Model.CourseCategoryName</code>
+</td>
+<td>
+    @Model.Description
+    <br />
+    <samp class="text-center text-uppercase" data-toggle="tooltip" data-placement="left" title="Hours">@Model.DisplayHours</samp>
+</td>
+<td class="text-right">
+    @Model.DisplayUnitPrice
+    <br />
+    <code data-toggle="tooltip" data-placement="left" title="Discount">- @Model.DisplayDiscount</code>
+</td>
+<td class="text-center font-size-sm">
+    @Model.DateUpdated
+</td>
+<td class="text-center">
+    @Model.UpdatedBy
+</td>
+<td class="text-center">
+    @if (Model.IsDeleted)
+    {
+        <code class="label label-lg  label-light-warning label-pill label-inline text-uppercase"> IN-ACTIVE </code>
+    }
+    else
+    {
+        <code class="label label-lg  label-light-success label-pill label-inline text-uppercase"> ACTIVE </code>
+    }
+</td>
+<td>
+    <a href="/Course/Details/@Model.Id" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-placement="top" title="View Course Details">
+        <i class="fas fa-car-alt"></i>
+    </a>
+    <button type="button" id="btn-update-@Model.Id" onclick="CourseView.getCourseForm(@Model.Id)" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-placement="top" title="Update Course">
+        <i class="flaticon-edit"></i>
+    </button>
+
+    @if (Model.IsDeleted)
+    {
+        <button type="button" id="btn-delete-@Model.Id" onclick="CourseView.confirmUpdateStatus(@Model.Id)" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-placement="top" title="Set as Active">
+            <i class="far fa-eye"></i>
+        </button>
+        <form id="formCourseDelete-@Model.Id" asp-antiforgery="true"
+          asp-controller="Course" asp-action="UpdateCourseStatus"
+          asp-route-id="@Model.Id"
+          asp-route-isDeleted="false",
+          asp-route-isPhysical="false"
+          data-ajax="true"
+          data-ajax-begin="CourseView.OnBeginSave"
+          data-ajax-complete="CourseView.OnSuccessUpdateStatus"
+          data-ajax-update="#crow-@Model.Id"></form>
+    }
+    else
+    {
+        <button type="button" id="btn-delete-@Model.Id" onclick="CourseView.confirmUpdateStatus(@Model.Id)" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-placement="top" title="Set as In Active">
+            <i class="far fa-eye-slash"></i>
+        </button>
+        <form id="formCourseDelete-@Model.Id" asp-antiforgery="true"
+          asp-controller="Course" asp-action="UpdateCourseStatus"
+          asp-route-id="@Model.Id"
+          asp-route-isDeleted="true"
+          asp-route-isPhysical="false"
+          data-ajax="true"
+          data-ajax-begin="CourseView.OnBeginSave"
+          data-ajax-complete="CourseView.OnSuccessUpdateStatus"
+          data-ajax-update="#crow-@Model.Id"></form>
+    }
+</td>

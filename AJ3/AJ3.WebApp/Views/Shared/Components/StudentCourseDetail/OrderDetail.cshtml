@@ -1,0 +1,70 @@
+﻿@using AJ3.Core.Common
+@using AJ3.Core.Data.Entity
+@model StudentCourseDetailViewModel
+@{
+    var student = (StudentDetailViewModel)ViewBag.Student;
+    var comProf = (CompanyProfile)ViewBag.CompanyProfile;
+}
+<div class="card card-custom overflow-hidden">
+    <div class="card-body p-0">
+        <div id="detailsContent">
+        <div class="row justify-content-center py-8 px-8 py-md-17 px-md-0">
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between pb-10 pb-md-10 flex-md-row">
+                    <h1 class="display-4 font-weight-boldest mb-10">INVOICE</h1>
+                    <div class="d-flex flex-column align-items-md-end px-0">
+                        <!--begin::Logo-->
+                        <a href="#" class="mb-5">
+                            <img src="assets/media/logos/AJ3.jpg" height="50" alt=""/>
+                        </a>
+                        <!--end::Logo-->
+                        <span class="d-flex flex-column align-items-md-end opacity-70">
+                            <span>@comProf.Name</span>
+                            <span class="font-size-base ">@comProf.Address</span>
+                            <span class="font-size-base font-weight-light">Mobile: @comProf.MobileNumber @(!string.IsNullOrEmpty(comProf.PhoneNumber) ? $"Telephone:{comProf.PhoneNumber}" : "")</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="border-bottom w-100"></div>
+                <div class="d-flex justify-content-between pt-6">
+                    <div class="d-flex flex-column flex-root">
+                        <span class="font-weight-bolder mb-2">DATE</span>
+                        <span class="opacity-70">@Model.DateOrdered.ToString("MMM dd, yyyy")</span>
+                    </div>
+                    <div class="d-flex flex-column flex-root">
+                        <span class="font-weight-bolder mb-2">INVOICE NO.</span>
+                        <span class="opacity-70">@Model.OrderNumber</span>
+                    </div>
+                    <div class="d-flex flex-column flex-root">
+                        <span class="font-weight-bolder mb-2">INVOICE TO.</span>
+                        <span class="opacity-70">
+                            @student.FullName
+                            <br/>@student.Address
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end: Invoice header-->
+        @await Component.InvokeAsync("OrderDetailList", new {orderId = Model.OrderId})
+        <div class="row justify-content-center py-4 px-8 py-md-2 px-md-0">
+            <div class="col-md-9">
+                <div class="table-responsive">
+                    @await Component.InvokeAsync("OrderAdjustmentList", new { orderId = Model.OrderId })
+                </div>
+            </div>
+        </div>
+        @await Component.InvokeAsync("OrderPaymentHistoryDetail", new {orderId = Model.OrderId, view = OrderView.Order})
+        <!-- begin: Invoice action-->
+        </div>
+        <div class="row justify-content-center py-8 px-8 py-md-10 px-md-0">
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" onclick="OrderDetail.print('detailsContent');">Download Invoice</button>
+                    <button type="button" class="btn btn-primary font-weight-bold" onclick="OrderDetail.print('detailsContent');">Print Invoice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end::Card-->

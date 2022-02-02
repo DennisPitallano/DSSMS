@@ -1,0 +1,45 @@
+﻿@model IEnumerable<AJ3.WebApp.Models.Order.OrderAdjustmentViewModel>
+@if (Model.Any())
+{
+    <div class="row col font-weight-bold">
+        ADJUSTMENTS
+    </div>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th> DETAIL</th>
+                <th class="text-right" scope="col">DATE ADJ.</th>
+                <th class="text-center" scope="col">ADJ. BY</th>
+                <th class="text-right " scope="col">ADJ. AMOUNT</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orderAdjustment in Model)
+            {
+                <tr>
+                    <th>@orderAdjustment.Detail</th>
+                    <td class="text-right">
+                        @orderAdjustment.DateUpdated.ToString("F")
+                    </td>
+                    <td class="text-center">@orderAdjustment.UpdatedBy</td>
+                    <td class="text-right ">
+                        @if (orderAdjustment.IsCredit)
+                        {
+                            <span> @orderAdjustment.DisplayAmount</span>
+                        }
+                        else
+                        {
+                            <span>(@orderAdjustment.DisplayAmount)</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+}
+else
+{
+    <div class="text-center pt-3"> No Adjustment</div>
+}

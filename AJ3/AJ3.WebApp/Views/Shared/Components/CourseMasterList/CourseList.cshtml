@@ -1,0 +1,23 @@
+﻿@model IEnumerable<AJ3.WebApp.Models.Course.CourseMasterListViewModel>
+<table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="text-right">Course Price</th>
+            <th class="text-center">Updated Date</th>
+            <th class="text-center">Updated By</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr id="crow-@course.Id">
+                @await Component.InvokeAsync("CourseRow",course).ConfigureAwait(false)
+            </tr>
+        }
+    </tbody>
+</table>

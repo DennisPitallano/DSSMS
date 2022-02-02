@@ -1,0 +1,21 @@
+﻿@model IEnumerable<StudentOrderViewModel>
+<div class="container">
+    <div class="accordion accordion-solid accordion-toggle-plus" id="accordionOrders">
+        @foreach (var order in Model.OrderByDescending(a=>a.Id))
+        {
+            <div class="card">
+                <div class="card-header" id="OR_@order.Id">
+                    <div class="card-title" data-toggle="collapse" data-target="#collapseOne6_@order.Id">
+                        <i class="flaticon-file-2"></i>ORDER NO. @order.OrderNumber
+                    </div>
+                </div>
+                <div id="collapseOne6_@order.Id" class="collapse show" data-parent="#accordionOrders">
+                    <div class="card-body">
+                        @await Component.InvokeAsync("OrderPaymentHistoryDetail", new {orderId=order.Id})
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="separator separator-dashed my-3"></div>
+</div>

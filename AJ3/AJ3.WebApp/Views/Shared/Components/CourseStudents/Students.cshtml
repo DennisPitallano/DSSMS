@@ -1,0 +1,65 @@
+﻿@model IEnumerable<StudentMasterListViewModel>
+<table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Nationality</th>
+            <th>Course Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>
+                    <a target="_blank" href="/students/student/@student.Id" data-toggle="tooltip" data-placement="top" title="View Profile">
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-40 symbol-sm flex-shrink-0  symbol-success">
+                                @if (student.Gender)
+                                {
+                                    <img class="" src="assets/media/svg/avatars/016-boy-7.svg" alt="photo">
+                                }
+                                else
+                                {
+                                    <img class="" src="assets/media/svg/avatars/003-girl-1.svg" alt="photo">
+                                }
+                                @if (student.IsDeleted)
+                                {
+                                    <i class="symbol-badge bg-gray-900" data-toggle="tooltip" data-placement="top" title="In Active"></i>
+                                }
+                                else
+                                {
+                                    <i class="symbol-badge bg-success" data-toggle="tooltip" data-placement="top" title="Active"></i>
+                                }
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">
+                                    @student.FullName
+                                </div>
+                                <span class="text-muted font-weight-bold text-hover-primary">
+                                    <samp> @student.Phone</samp>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </td>
+                <td>@student.Address</td>
+                <td>
+                    @student.Nationality
+                </td>
+                <td class="text-center">
+                    <span>
+                        @student.CourseDescription
+                    </span>
+                    <br />
+                    <span>
+                        <code class="label label-md label-light-success label-inline"> @student.CourseStatus [@student.DisplayCourseHours] </code>
+                    </span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,74 @@
+﻿@model AJ3.WebApp.Models.Course.CourseMasterListViewModel
+<!--begin::Wrapper-->
+<div class="d-flex justify-content-between flex-column pt-4 h-100">
+    <!--begin::Container-->
+    <div class="pb-5">
+        <!--begin::Header-->
+        <div class="d-flex flex-column flex-center">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-120 symbol-circle symbol-light-primary overflow-hidden">
+                <span class="symbol-label">
+                    <i class="flaticon-trophy icon-5x text-danger align-self-end"></i>
+                </span>
+            </div>
+            <!--end::Symbol-->
+            <!--begin::Username-->
+            <a class="card-title font-weight-bolder text-dark-75 text-hover-primary font-size-h4 m-0 pt-7 pb-1">@Model.Name</a>
+            <!--end::Username-->
+            <!--begin::Info-->
+            <div class="font-weight-bold text-dark-50 font-size-base text-uppercase pb-6">@Model.DisplayHours</div>
+            <!--end::Info-->
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="pt-1">
+            <!--begin::Text-->
+            <p class="text-dark-75 font-weight-normal text-center font-size-lg m-0 pb-7">
+                @Model.Description
+            </p>
+            <!--end::Text-->
+            <div class="d-flex align-items-center pb-9">
+                <!--begin::Symbol-->
+                <div class="symbol symbol-45 symbol-light mr-4">
+                    <span class="symbol-label font-size-h1">
+                        ₱
+                    </span>
+                </div>
+                <!--end::Symbol-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column flex-grow-1">
+                    <a  class="text-dark-75 text-hover-primary mb-1 font-size-lg font-weight-bolder">Price</a>
+                    <span class="text-muted font-weight-bold">@Model.DisplayUnitPrice</span>
+                </div>
+                <!--end::Text-->
+                <!--begin::label-->
+                <span data-toggle="tooltip" title="Discount" class="font-weight-bolder label label-xl label-light-danger label-inline py-5 min-w-45px">-@Model.DisplayDiscount</span>
+                <!--end::label-->
+            </div>
+            <!--end::Item-->
+        </div>
+        <div class="pt-1">
+            <p class="text-dark-50 font-weight-light  text-center font-size-lg m-0 pb-7">
+                Updated by: @Model.UpdatedBy
+                <br/>
+                last @Model.DateUpdated.ToString("F")
+            </p>
+        </div>
+
+            <!--end::Body-->
+        </div>
+    <!--eng::Container-->
+    <!--begin::Footer-->
+    <div class="d-flex flex-center" id="kt_sticky_toolbar_chat_toggler_1" data-toggle="tooltip" title="" data-original-title="Status">
+        @if (Model.IsDeleted)
+        {
+            <label class="label label-inline label-light-danger  font-size-sm "> <i class="far fa-eye-slash text-danger"></i> IN ACTIVE</label>
+        }
+        else
+        {
+            <label class="label label-inline label-light-success font-size-sm "> <i class="far fa-eye text-success"></i> ACTIVE</label>
+        }
+    </div>
+    <!--end::Footer-->
+</div>
+<!--end::Wrapper-->

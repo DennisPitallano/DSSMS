@@ -1,0 +1,69 @@
+﻿@model AJ3.WebApp.Models.Course.CourseMasterListViewModel
+<form class="form" data-ajax-method="post" data-ajax="true" asp-action="SaveCourse" asp-controller="Course"
+      data-ajax-begin="CourseView.OnBegin"
+      data-ajax-success="CourseView.OnSuccessSaveCourse"
+      data-ajax-update="#crow-@Model.Id">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="OrigDiscount" />
+    <input type="hidden" asp-for="OrigUnitPrice" />
+    <div class="form-group">
+        <label>Name:</label>
+        <input class="form-control form-control-solid" asp-for="Name" placeholder="Enter Course name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Description:</label>
+        <input asp-for="Description" class="form-control form-control-solid" placeholder="Enter Course Description" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Category:</label>
+        <select asp-for="CategoryId" asp-items="(SelectList)ViewBag.CourseCategories" class="form-control" >
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">Price</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    ₱
+                </span>
+            </div>
+            <input  asp-for="UnitPrice" class="form-control form-control-lg form-control-solid" placeholder="Price" >
+        </div>
+        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">Discount</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    ₱
+                </span>
+            </div>
+            <input  asp-for="Discount" class="form-control form-control-lg form-control-solid" placeholder="Price" >
+        </div>
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">Hours</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    <i class="flaticon-time"></i>
+                </span>
+            </div>
+            <input  asp-for="Hours" min="1" class="form-control form-control-lg form-control-solid" placeholder="Hours" >
+        </div>
+        <span asp-validation-for="Hours" class="text-danger"></span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary font-weight-bold">Save</button>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+   
+</script>

@@ -1,0 +1,123 @@
+﻿@model IEnumerable<StudentMasterListViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+@section style
+{
+<link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+}
+<div class="content d-flex flex-column py-lg-3 flex-column-fluid" id="kt_content">
+    <div class="subheader py-3 py-lg-2 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h2 class="d-flex align-items-center text-dark font-weight-bold my-1 mr-3">Student Master list</h2>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold my-2 p-0">
+                        <li class="breadcrumb-item text-muted">
+                            <a class="text-muted active">students</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Nationality</th>
+                                <th>Course</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td>@student.StudentId</td>
+                                    <td>
+                                        <a href="/students/student/@student.Id"  data-toggle="tooltip" data-placement="top" title="View Profile">
+                                            <div class="d-flex align-items-center">
+                                                <div class="symbol symbol-40 symbol-sm flex-shrink-0  symbol-success">
+                                                    @if (student.Gender)
+                                                    {
+                                                        <img class="" src="assets/media/svg/avatars/016-boy-7.svg" alt="photo">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="" src="assets/media/svg/avatars/003-girl-1.svg" alt="photo">
+                                                    }
+                                                    @if (student.IsDeleted)
+                                                    {
+                                                        <i class="symbol-badge bg-gray-900" data-toggle="tooltip" data-placement="top" title="In Active"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="symbol-badge bg-success" data-toggle="tooltip" data-placement="top" title="Active"></i>
+                                                    }
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-dark-75 font-weight-bolder font-size-lg mb-0 text-capitalize">
+                                                        @student.FullName
+                                                    </div>
+                                                    <span class="text-muted font-weight-bold text-hover-primary">
+                                                        <samp> @student.Phone</samp>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td>@student.Address</td>
+                                    <td>
+                                        @student.Nationality
+                                    </td>
+                                    <td class="text-center">
+                                        <span>
+                                            @student.CourseDescription
+                                        </span>
+                                        <br />
+                                        <span>
+                                            <code class="label label-md label-light-success label-inline"> @student.CourseStatus [@student.DisplayCourseHours] </code>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (!student.IsDeleted)
+                                        {
+                                            <span class="flaticon-user-ok text-success mr-2"></span>
+                                            <span class="font-weight-bold text-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="flaticon-close text-danger mr-2"></span>
+                                            <span class="font-weight-bold text-danger">In Active</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="js/student/masterlist.js"></script>
+}
+

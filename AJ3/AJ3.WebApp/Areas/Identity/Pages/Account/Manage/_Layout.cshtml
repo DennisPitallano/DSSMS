@@ -1,0 +1,57 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+<div class="content d-flex flex-column py-lg-3 flex-column-fluid" id="kt_content">
+    
+    <div class="subheader py-3 py-lg-2 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h2 class="d-flex align-items-center text-dark font-weight-bold my-1 mr-3">
+
+                        Manage your account
+                    </h2>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <div class="container">
+            <h4>Change your account settings</h4>
+            <hr/>
+            <div class="row">
+                <div class="col-md-3">
+                    <partial name="_ManageNav"/>
+                </div>
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
+            </div>
+            <!--end::Card-->
+            <div class="row text-center">
+                <a asp-controller="Home" class="btn btn-light-primary text-center" asp-action="Index">
+                   <i class="flaticon-reply"></i> BACK
+                </a>
+            </div>
+        </div>
+        
+    </div>
+    <!--end::Container-->
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

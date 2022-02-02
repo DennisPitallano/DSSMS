@@ -1,0 +1,93 @@
+﻿@model ChangeStudentCourseFromViewModel
+<form class="form" data-ajax-method="post" data-ajax="true" asp-action="ChangeStudentCourse" asp-controller="Students"
+      data-ajax-begin="StudentProfile.OnBeginSave"
+      data-ajax-success="StudentProfile.OnSuccessChangeCourse">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="OrderId" />
+    <input type="hidden" asp-for="StudentId" />
+    <input type="hidden" asp-for="TotalPaidAmount" />
+    @*<div class="form-group row">
+            <label class="col-3 col-form-label">Avail Refund</label>
+            <div class="col-3">
+                <span class="switch switch-icon">
+                    <label>
+                        <input onclick="StudentProfile.availRefund(this,@Model.TotalPaidAmount)" asp-for="IsRefunded" type="checkbox" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        <label class=" "> Change Type</label>
+        <div class="">
+            <div class="radio-inline">
+                <label class="radio radio-lg radio-primary">
+                    <input type="radio" value="True" asp-for="IsUpgrade" checked="checked"  />
+                    <span></span>
+                    UPGRADE
+                </label>
+                <label class="radio radio-lg radio-primary">
+                    <input type="radio" value="False" asp-for="IsUpgrade" />
+                    <span></span>
+                    DOWNGRADE
+                </label>
+            </div>
+            @*<span class="form-text text-muted">Some help text goes here</span>*@
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Change To Course:</label>
+        <select asp-for="ToCourseId" asp-items="(SelectList)ViewBag.AvailableCourses"  class="form-control form-control-solid"></select>
+        <span asp-validation-for="ToCourseId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Change Course Reason:</label>
+        <textarea asp-for="ChangeCourseReason" class="form-control form-control-solid" placeholder="Enter Reason Description"></textarea>
+        <span asp-validation-for="ChangeCourseReason" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class=" "> Payment Adj.</label>
+        <div class=" ">
+            <div class="radio-inline">
+                <label class="radio radio-lg radio-primary">
+                    <input type="radio" asp-for="IsCredit" value="False" />
+                    <span></span>
+                    REFUND PAYMENT
+                </label>
+                <label class="radio radio-lg radio-primary">
+                    <input type="radio" asp-for="IsCredit" value="True" checked="checked" />
+                    <span></span>
+                    ADDITIONAL PAYMENT
+                </label>
+            </div>
+            @*<span class="form-text text-muted">Some help text goes here</span>*@
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="">Adjustment Amount</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    ₱
+                </span>
+            </div>
+            <input asp-for="AdjustmentAmount" class="form-control form-control-lg form-control-solid" value="0" placeholder="Price">
+        </div>
+        <span asp-validation-for="AdjustmentAmount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">Total Paid Amount: <samp> @Model.DisplayTotalPaidAmount </samp></label>
+    </div>
+    <div class="text-center my-3 font-weight-lighter text-danger">
+        <i class="flaticon-warning-sign text-danger"></i> You won't be able to revert this!
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary font-weight-bold">Save</button>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+
+</script>

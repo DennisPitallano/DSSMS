@@ -1,0 +1,45 @@
+﻿@using AJ3.WebApp.Infrastructure.Extensions
+@model IEnumerable<StudentOrderPaymentViewModel>
+<!-- begin: Invoice footer-->
+<div class="row justify-content-center bg-gray-100 py-8 px-8 py-md-10 px-md-0">
+    <div class="col-md-9">
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold text-muted text-uppercase">OR NUMBER</th>
+                        <th class="font-weight-bold text-muted text-uppercase">DATE PAID</th>
+                        <th class="font-weight-bold text-muted text-uppercase">RECEIVED BY</th>
+                        <th class="font-weight-bold text-right text-muted text-uppercase">TOTAL AMOUNT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var payment in Model)
+                    {
+                        <tr class="">
+                            <td>@payment.OrNumber</td>
+                            <td>@payment.PaymentDate.ToString("MMM dd, yyyy")</td>
+                            <td>@payment.UpdatedBy</td>
+                            <td class="text-danger text-right font-size-base font-weight-bold">@payment.Amount.ToPhFormatCurrency()</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                <tr >
+                    <td class="text-left">Total Payment</td>
+                    <td colspan="3" class="text-danger text-right font-size-h6 font-weight-bolder">
+                        <span class=" border-top">
+                            @Model.Sum(a => a.Amount).ToPhFormatCurrency()
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">Total Balance </td>
+                    <td colspan="3" class="text-danger text-right font-size-h6 font-weight-bolder">@( ((decimal) ViewBag.TotalAmount).ToPhFormatCurrency())</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- end: Invoice footer-->

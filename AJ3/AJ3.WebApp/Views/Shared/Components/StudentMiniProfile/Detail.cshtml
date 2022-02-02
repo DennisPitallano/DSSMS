@@ -1,0 +1,67 @@
+﻿@model StudentDetailViewModel
+<!--begin::Wrapper-->
+<div class="d-flex justify-content-between flex-column pt-4 h-100">
+    <!--begin::Container-->
+    <div class="pb-5">
+        <!--begin::Header-->
+        <div class="d-flex flex-column flex-center">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-120 symbol-circle symbol-success overflow-hidden">
+                <span class="symbol-label">
+                    @if (Model.Gender)
+                    {
+                        <img src="assets/media/svg/avatars/016-boy-7.svg" class="h-75 align-self-end" alt="" />
+                    }
+                    else
+                    {
+                        <img src="assets/media/svg/avatars/003-girl-1.svg" class="h-75 align-self-end" alt="" />
+                    }
+                </span>
+            </div>
+            <!--end::Symbol-->
+            <!--begin::Username-->
+            <a href="#" class="card-title font-weight-bolder text-dark-75 text-hover-primary font-size-h4 m-0 pt-7 pb-1">@Model.FullName</a>
+            <!--end::Username-->
+            <!--begin::Info-->
+            <div class="font-weight-bold text-dark-50 font-size-sm pb-6">@Model.DisplayId, AJ3 Student</div>
+            <!--end::Info-->
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="pt-1">
+            <!--begin::Text-->
+            <p class="text-dark-75 font-weight-nirmal font-size-lg m-0 pb-7">
+                @Model.Address
+            </p>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--eng::Container-->
+    <!--begin::Footer-->
+    <div class="d-flex flex-center" id="kt_sticky_toolbar_chat_toggler_1">
+        @if (Model.IsDeleted)
+        {
+            <button type="button" data-toggle="tooltip" title="Student Status"  data-original-title="Update Status" onclick="StudentProfile.confirmUpdateStudentStatus()" form="formUStudentUpdateStatus"  class="btn btn-light-primary btn-sm font-weight-bolder font-size-sm " >@Model.StudentStatus</button>
+            <form id="formUStudentUpdateStatus" asp-antiforgery="true"
+              asp-controller="Students" asp-action="UpdateStudentStatus"
+              asp-route-id="@Model.Id"
+              asp-route-isDeleted="false"
+              data-ajax="true"
+              data-ajax-begin="StudentProfile.OnBeginSave"
+              data-ajax-complete="StudentProfile.OnSuccessUpdateStudent"></form>
+        }
+        else
+        {
+            <button type="button" data-toggle="tooltip" title="Student Status" data-original-title="Update Status" onclick="StudentProfile.confirmUpdateStudentStatus()" form="formUStudentUpdateStatus"  class="btn btn-light-success btn-sm font-weight-bolder font-size-sm " >@Model.StudentStatus</button>
+            <form id="formUStudentUpdateStatus" asp-antiforgery="true"
+              asp-controller="Students" asp-action="UpdateStudentStatus"
+              asp-route-id="@Model.Id"
+              asp-route-isDeleted="true"
+              data-ajax="true"
+              data-ajax-begin="StudentProfile.OnBeginSave"
+              data-ajax-complete="StudentProfile.OnSuccessUpdateStudent"></form>
+        }
+    </div>
+    <!--end::Footer-->
+</div>
+<!--end::Wrapper-->

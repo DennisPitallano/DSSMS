@@ -1,0 +1,138 @@
+﻿@model StudentDetailViewModel
+<form class="form" data-ajax="true" asp-action="UpdateStudentInfo" asp-controller="Students"
+      data-ajax-begin="StudentProfile.OnBeginSave"
+      data-ajax-success="StudentProfile.OnSuccessUpdateStudent"
+      asp-antiforgery="true" data-ajax-update="#kt_apps_contacts_view_tab_2">
+    <input type="hidden" asp-for="Id" />
+
+    <!--begin::Heading-->
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-1">
+            <h3 class="font-size-h6 mb-5">Student Info:</h3>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Last Name</label>
+        <div class="col-lg-9 col-xl-6">
+            <input class="form-control form-control-lg form-control-solid" type="text" asp-for="LastName"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">First Name</label>
+        <div class="col-lg-9 col-xl-6">
+            <input class="form-control form-control-lg form-control-solid" type="text" asp-for="FirstName"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Middle Name</label>
+        <div class="col-lg-9 col-xl-6">
+            <input class="form-control form-control-lg form-control-solid" type="text" asp-for="MiddleName"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Gender</label>
+        <div class="col-lg-9 col-xl-6 col-form-label">
+            <div class="radio-inline">
+                <label class="radio radio-outline radio-outline-2x radio-primary">
+                    <input type="radio" asp-for="Gender" checked="checked" value="True"/>
+                    <span></span>
+                    MALE
+                </label>
+                <label class="radio radio-outline radio-outline-2x radio-primary">
+                    <input type="radio" asp-for="Gender" value="False"/>
+                    <span></span>
+                    FEMALE
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Date of Birth</label>
+        <div class="col-lg-9 col-xl-6">
+            <input class="form-control form-control-lg form-control-solid" type="text" asp-for="DateOfBirth" value="@Model.DateOfBirth.ToShortDateString()"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Nationality</label>
+        <div class="col-lg-9 col-xl-6">
+            <input class="form-control form-control-lg form-control-solid" type="text" asp-for="Nationality"/>
+        </div>
+    </div>
+    <div class="separator separator-dashed my-10"></div>
+    <!--begin::Heading-->
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <h3 class="font-size-h6 mb-5">Contact Info:</h3>
+        </div>
+    </div>
+    <!--end::Heading-->
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Address</label>
+        <div class="col-lg-9 col-xl-6">
+            <textarea class="form-control form-control-lg form-control-solid" asp-for="Address" ></textarea>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Phone</label>
+        <div class="col-lg-9 col-xl-6">
+            <div class="input-group input-group-lg input-group-solid">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="la la-phone"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control form-control-lg form-control-solid" asp-for="Phone" placeholder="Phone"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Email Address</label>
+        <div class="col-lg-9 col-xl-6">
+            <div class="input-group input-group-lg input-group-solid">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="la la-at"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control form-control-lg form-control-solid" asp-for="Email"/>
+            </div>
+        </div>
+    </div>
+    <div class="separator separator-dashed my-10"></div>
+    <!--begin::Heading-->
+    <div class="row">
+        <div class="col-lg-9 col-xl-6 offset-xl-3">
+            <h3 class="font-size-h6 mb-5">Other Info:</h3>
+        </div>
+    </div>
+    <!--end::Heading-->
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Weight</label>
+        <div class="col-lg-9 col-xl-6">
+            <div class="input-group input-group-solid input-group-lg">
+                <div class="input-group-append">
+                    <span class="input-group-text text-muted">
+                        Kg <i class="la la-weight"></i>
+                    </span>
+                </div>
+                <input asp-for="Weight" type="text" class="form-control form-control-lg form-control-solid" placeholder="weight"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xl-3 col-lg-3 text-right col-form-label">Height</label>
+        <div class="col-lg-9 col-xl-6">
+            <div class="input-group input-group-solid input-group-lg">
+                <div class="input-group-append">
+                    <span class="input-group-text text-muted">
+                        cm <i class="la la-text-height"></i>
+                    </span>
+                </div>
+                <input asp-for="HeightCm" type="text" class="form-control form-control-lg form-control-solid" placeholder="height"/>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary font-weight-bold">Update</button>
+    </div>
+</form>

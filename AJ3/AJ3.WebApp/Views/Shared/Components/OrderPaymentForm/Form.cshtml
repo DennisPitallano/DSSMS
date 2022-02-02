@@ -1,0 +1,58 @@
+﻿@model OrderPaymentFormViewModel
+<form id="paymentForm" class="form" data-ajax="true" asp-action="SaveOrderPayment" asp-controller="Students"
+      data-ajax-begin="StudentProfile.OnBeginSave"
+      data-ajax-success="StudentProfile.OnSuccessSavePayment"
+      asp-antiforgery="true">
+    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="OrderId"/>
+    <input type="hidden" asp-for="StudentId"/>
+    <input type="hidden" asp-for="Type"/>
+    <div class="form-group">
+        <label class="">OR NUMBER:</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    <i class="flaticon-doc"></i>
+                </span>
+            </div>
+            <input class="form-control form-control-lg form-control-solid" type="text" autocomplete="off" asp-for="OrNumber"/>
+        </div>
+        <span asp-validation-for="OrNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">AMOUNT:</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    ₱
+                </span>
+            </div>
+            @if (Model.Id > 0)
+            {
+                <input onkeyup="StudentProfile.computeBalance(this,@Model.Amount)" autocomplete="off" aria-autocomplete="false" class="form-control form-control-lg form-control-solid" type="text" asp-for="Amount"/>
+            }
+            else
+            {
+                <input onkeyup="StudentProfile.computeBalance(this,0)" autocomplete="off" aria-autocomplete="false" class="form-control form-control-lg form-control-solid" type="text" asp-for="Amount"/>
+            }
+        </div>
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="">BALANCE:</label>
+        <div class="input-group input-group-solid input-group-lg">
+            <div class="input-group-append">
+                <span class="input-group-text text-muted">
+                    ₱
+                </span>
+            </div>
+            <input id="txtBalance" readonly="" class="form-control text-danger form-control-lg border-0" type="text" value="@Model.BalanceAmount"/>
+            <input type="hidden" id="TotalAmount" value="@Model.BalanceAmount"/>
+        </div>
+    </div>
+    <div class="modal-footer mb-0 pb-0">
+        <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+        <button type="submit" id="btnAddPayment" class="btn btn-primary btn-sm font-weight-bold">@(Model.Id>0?"Update Payment":"Add Payment")</button>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")

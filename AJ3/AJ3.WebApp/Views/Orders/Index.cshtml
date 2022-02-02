@@ -1,0 +1,109 @@
+﻿@model IEnumerable<OrderMasterListViewModel>
+    @{
+    ViewData["Title"] = "Index";
+}
+
+@section style{
+<link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    }
+<div class="content d-flex flex-column py-lg-3 flex-column-fluid" id="kt_content">
+    <div class="subheader py-3 py-lg-2 subheader-transparent" id="kt_subheader">
+        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h2 class="d-flex align-items-center text-dark font-weight-bold my-1 mr-3">Order Master list</h2>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold my-2 p-0">
+                        <li class="breadcrumb-item text-muted">
+                            <a class="text-muted active">orders</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <div class="card-body">
+                    <!--begin: Datatable-->
+                    <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date Ordered</th>
+                                <th>Student</th>
+                                <th class="text-right">Total Amount</th>
+                                <th class="text-right">Paid Amount</th>
+                                <th class="text-right">Balance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td class="font-weight-bold">@order.OrderNumber</td>
+                                    <td>
+                                        @order.DateOrdered.ToString("D")
+                                    </td>
+                                    <td>
+                                        @order.FullName
+                                    </td>
+                                    <td class="text-right">
+                                        @order.DisplayTotalAmount
+                                        <br />
+                                        <code data-toggle="tooltip" data-placement="left" title="Discount">- @order.DisplayDiscount</code>
+                                    </td>
+                                    <td class="text-right">
+                                        @order.DisplayTotalPaidAmount
+                                    </td>
+                                    <td class="text-right">
+                                        @order.DisplayBalance
+                                    </td>
+                                    <td class="text-center">
+                                        @if (order.Status.Equals("Paid", StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            <code class="label label-lg label-outline-success label-light-success label-inline text-uppercase"> @order.Status </code>
+                                        }
+                                        else
+                                        {
+                                            <code class="label label-lg label-outline-warning label-light-warning label-inline text-uppercase"> @order.Status </code>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="/Orders/Details/@order.Id" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-placement="top" title="View Order Details">
+                                            <i class="flaticon-doc"></i>
+                                        </a>
+                                        @*  <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">
+                                            <i class="la la-trash"></i>
+                                            </a>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!--end: Datatable-->
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Container-->
+    </div>
+</div>
+@section scripts
+{
+<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="js/orders/order-view.js"></script>
+    }
+
